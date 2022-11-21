@@ -24,7 +24,7 @@ router.get('/', getAll);
 router.get('/:id', getById);
 
 // Update Post
-// http://localhost:3002/api/posts/:id
+// http://localhost:5000/api/posts/:id
 router.put('/:id', checkAuth, updatePost);
 
 // Get My Posts

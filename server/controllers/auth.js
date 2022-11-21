@@ -103,6 +103,7 @@ export const getMe = async (req, res) => {
     res.json({
       user,
       token,
+      userid: user._id,
     });
   } catch (error) {
     res.json({ message: 'No access.' });

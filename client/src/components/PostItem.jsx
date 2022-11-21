@@ -3,21 +3,24 @@ import { AiFillEye, AiOutlineMessage } from 'react-icons/ai';
 import Moment from 'react-moment';
 import { Link } from 'react-router-dom';
 
-export const PostItem = ({ post }) => {
+export const PostItem = ({ post, loginUserName }) => {
   if (!post) {
-    return (
-      <div className='text-xl text-center text-white py-10'>Loading...</div>
-    );
+    return;
+    // return (
+    //   <div className='text-xl text-center text-white py-10'>Loading111...</div>
+    // );
   }
+  // console.log('PostItem.jsx post === ', loginUserName, post);
   return (
-    <Link to={`/${post._id}`}>
-      <div className='flex flex-col basis-1/4 flex-grow'>
+    // <Link to={`/${post._id}`}>
+    <Link to={loginUserName ? `/${post._id}` : ''}>
+      <div className='flex flex-col basis-1/4 flex-grow  px-20'>
         <div
           className={post.imgUrl ? 'flex rouded-sm h-80' : 'flex rounded-sm'}
         >
           {post.imgUrl && (
             <img
-              src={`http://localhost:3002/${post.imgUrl}`}
+              src={`http://localhost:5000/${post.imgUrl}`}
               alt='img'
               className='object-cover w-full'
             />
@@ -36,10 +39,10 @@ export const PostItem = ({ post }) => {
 
         <div className='flex gap-3 items-center mt-2'>
           <button className='flex items-center justify-center gap-2 text-xs text-white opacity-50'>
-            <AiFillEye /> <span>{post.views}</span>
+            <AiFillEye /> <span>{post.views} VIEWS</span>
           </button>
           <button className='flex items-center justify-center gap-2 text-xs text-white opacity-50'>
-            <AiOutlineMessage /> <span>{post.comments?.length || 0} </span>
+            <AiOutlineMessage /> <span>{post.comments?.length || 0} LIKES</span>
           </button>
         </div>
       </div>

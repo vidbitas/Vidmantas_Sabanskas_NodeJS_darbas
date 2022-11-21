@@ -11,7 +11,8 @@ export const createPost = async (req, res) => {
     const user = await User.findById(req.userId);
 
     if (req.files) {
-      let fileName = Date.now().toString() + req.files.image.name;
+      // let fileName = Date.now().toString() + req.files.image.name;
+      let fileName = req.files.image.name;
       const __dirname = dirname(fileURLToPath(import.meta.url));
       req.files.image.mv(path.join(__dirname, '..', 'uploads', fileName));
 
@@ -52,11 +53,12 @@ export const createPost = async (req, res) => {
 export const getAll = async (req, res) => {
   try {
     const posts = await Post.find().sort('-createdAt');
-    const popularPosts = await Post.find().limit(5).sort('-views');
 
     if (!posts) {
       return res.json({ message: 'No posts' });
     }
+
+    const popularPosts = await Post.find().limit(5).sort('-views');
 
     res.json({ posts, popularPosts });
   } catch (error) {
@@ -70,13 +72,14 @@ export const getById = async (req, res) => {
     const post = await Post.findByIdAndUpdate(req.params.id, {
       $inc: { views: 1 },
     });
+
     res.json(post);
   } catch (error) {
     res.json({ message: 'Something went wrong.' });
   }
 };
 
-// Get All Posts
+// Get All My Posts
 export const getMyPosts = async (req, res) => {
   try {
     const user = await User.findById(req.userId);

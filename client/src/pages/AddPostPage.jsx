@@ -11,7 +11,8 @@ export const AddPostPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const submitHandler = () => {
+  const submitHandler = (event) => {
+    event.preventDefault();
     try {
       const data = new FormData();
       data.append('title', title);

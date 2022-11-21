@@ -31,6 +31,7 @@ export const PostPage = () => {
   const params = useParams();
   const dispatch = useDispatch();
 
+  // console.log('PostPage.jsx === ', comments, params);
   const removePostHandler = () => {
     try {
       dispatch(removePost(params.id));
@@ -93,7 +94,7 @@ export const PostPage = () => {
             >
               {post?.imgUrl && (
                 <img
-                  src={`http://localhost:3002/${post.imgUrl}`}
+                  src={`http://localhost:5000/${post.imgUrl}`}
                   alt='img'
                   className='object-cover w-full'
                 />

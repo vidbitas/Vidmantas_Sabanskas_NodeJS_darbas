@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { checkIsAuth, logout } from '../redux/features/auth/authSlice';
 import { toast } from 'react-toastify';
@@ -7,6 +7,8 @@ import { toast } from 'react-toastify';
 export const Navbar = () => {
   const isAuth = useSelector(checkIsAuth);
   const dispatch = useDispatch();
+  const loginUserName = useSelector((state) => state.auth.user);
+  const navigate = useNavigate();
 
   const activeStyles = {
     color: 'white',
@@ -14,8 +16,10 @@ export const Navbar = () => {
 
   const logoutHandler = () => {
     dispatch(logout());
-    window.localStorage.removeItem('token');
+    window.localStorage.removeItem(loginUserName._id);
+    window.localStorage.removeItem('user');
     toast('You are logged out');
+    navigate('/');
   };
 
   return (
@@ -24,46 +28,55 @@ export const Navbar = () => {
         VidBitas
       </span>
 
-      {isAuth && (
-        <ul className='flex gap-8'>
-          <li>
-            <NavLink
-              to={'/'}
-              href='/'
-              className='text-xs text-gray-400 hover:text-white'
-              style={({ isActive }) => (isActive ? activeStyles : undefined)}
-            >
-              Home
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              to={'/posts'}
-              href='/'
-              className='text-xs text-gray-400 hover:text-white'
-              style={({ isActive }) => (isActive ? activeStyles : undefined)}
-            >
-              My posts
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              to={'/new'}
-              href='/'
-              className='text-xs text-gray-400 hover:text-white'
-              style={({ isActive }) => (isActive ? activeStyles : undefined)}
-            >
-              Add post
-            </NavLink>
-          </li>
-        </ul>
-      )}
+      <ul className='flex gap-8'>
+        <li>
+          <NavLink
+            to={'/'}
+            href='/'
+            className='text-xs text-gray-400 hover:text-white'
+            style={({ isActive }) => (isActive ? activeStyles : undefined)}
+          >
+            Home
+          </NavLink>
+        </li>
+        {isAuth && (
+          <div className='flex gap-8'>
+            <li>
+              <NavLink
+                to={'/posts'}
+                href='/'
+                className='text-xs text-gray-400 hover:text-white'
+                style={({ isActive }) => (isActive ? activeStyles : undefined)}
+              >
+                My posts
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
+                to={'/new'}
+                href='/'
+                className='text-xs text-gray-400 hover:text-white'
+                style={({ isActive }) => (isActive ? activeStyles : undefined)}
+              >
+                Add post
+              </NavLink>
+            </li>
+          </div>
+        )}
+      </ul>
 
-      <div className='flex justify-center items-center bg-gray-600 text-xs text-white rounded-sm px-4 py-2'>
-        {isAuth ? (
-          <button onClick={logoutHandler}>Sign Out</button>
-        ) : (
-          <Link to={'/login'}> Sign In </Link>
+      <div>
+        <div className='flex justify-center items-center bg-gray-600 text-xs text-white rounded-sm px-4 py-2'>
+          {isAuth ? (
+            <button onClick={logoutHandler}>Sign Out</button>
+          ) : (
+            <Link to={'/login'}> Sign In </Link>
+          )}
+        </div>
+        {loginUserName && (
+          <div className='text-xs text-white '>
+            <p>Signs: {loginUserName.username}</p>
+          </div>
         )}
       </div>
     </div>

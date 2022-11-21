@@ -1,14 +1,15 @@
 import express from 'express';
 import mongoose from 'mongoose';
+const app = express();
 import dotenv from 'dotenv';
 import cors from 'cors';
+import morgan from 'morgan';
 import fileUpload from 'express-fileupload';
 
 import authRoute from './routes/auth.js';
 import postRoute from './routes/posts.js';
 import commentRoute from './routes/comments.js';
 
-const app = express();
 dotenv.config();
 
 // Constants
@@ -19,6 +20,7 @@ const DB_NAME = process.env.DB_NAME;
 
 // Middleware
 app.use(cors());
+app.use(morgan('dev'));
 app.use(fileUpload());
 app.use(express.json());
 app.use(express.static('uploads'));
